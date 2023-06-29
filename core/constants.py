@@ -1,0 +1,1 @@
+CARS_SIZE = 7
