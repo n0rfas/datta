@@ -7,3 +7,8 @@ class Field(BaseTerrain):
     _emoji_icon = '🌿'
     _transit_time = 3
     _rarity = 8
+    _seed_list = [
+        'Цветочное',
+        'Пшеничное',
+        'Травянистое',
+    ]

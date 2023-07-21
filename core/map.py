@@ -10,14 +10,10 @@ from core.terrains.village import Village
 def generate_map():
 
     # TODO auto added
-    field = Field()
-    forest = Forest()
-    graveyard = Graveyard()
-
     weighted_choices = [
-        (field, field._rarity),
-        (forest, forest._rarity),
-        (graveyard, graveyard._rarity),
+        (Field, Field.rarity()),
+        (Forest, Forest.rarity()),
+        (Graveyard, Graveyard.rarity()),
     ]
     terrains = [val for val, cnt in weighted_choices for i in range(cnt)]
 
@@ -25,22 +21,31 @@ def generate_map():
     for i in range(CARS_SIZE):
         cols = []
         for j in range(CARS_SIZE):
-            cols.append(random.choice(terrains))
+            T = random.choice(terrains)
+            cols.append(T())
         rows.append(cols)
 
-    x = random.randint(0, CARS_SIZE - 1)
     y = random.randint(0, CARS_SIZE - 1)
-    rows[x][y] = Village()
+    x = random.randint(0, CARS_SIZE - 1)
+    village = Village()
+    village.was_visited = True
+    rows[y][x] = village
 
-    return rows, [x, y]
+    rows[0][0].was_visited = True
+
+    return rows, [y, x]
 
 
-def preview_map(map_):
+def preview_map(map_, hero_position):
     rows = ""
     for x in range(0, len(map_)):
         cols = ""
         for y in range(0, len(map_)):
-            cols += map_[x][y].emoji_icon
+            if hero_position == [x, y]:
+                p = '🤺'
+            else:
+                p = map_[x][y].emoji_icon
+            cols += p
         rows += cols + '\n'
 
     return rows
