@@ -31,20 +31,20 @@ def generate_map():
     village.was_visited = True
     rows[y][x] = village
 
-    rows[0][0].was_visited = True
+    rows[0][1].was_visited = True
 
     return rows, [y, x]
 
 
 def preview_map(map_, hero_position):
     rows = ""
-    for x in range(0, len(map_)):
+    for y in range(0, len(map_)):
         cols = ""
-        for y in range(0, len(map_)):
-            if hero_position == [x, y]:
+        for x in range(0, len(map_)):
+            if hero_position == [y, x]:
                 p = '🤺'
             else:
-                p = map_[x][y].emoji_icon
+                p = map_[y][x].emoji_icon
             cols += p
         rows += cols + '\n'
 

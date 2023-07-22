@@ -9,7 +9,7 @@ def get_keyboard(hero_position: tuple) -> InlineKeyboardMarkup:
     keyboard = [
         [
             InlineKeyboardButton('🤺', callback_data='hero'),
-            InlineKeyboardButton('⬆️', callback_data='top'),
+            InlineKeyboardButton('⬆️', callback_data='up'),
             InlineKeyboardButton('📑', callback_data='todo'),
         ],
         [
@@ -27,7 +27,7 @@ def get_keyboard(hero_position: tuple) -> InlineKeyboardMarkup:
     # if the hero is on the edge of the map - block the button
     wall_button = InlineKeyboardButton('*️⃣', callback_data='well')
 
-    if hero_position[0] == 0:  # top
+    if hero_position[0] == 0:  # up
         keyboard[0][1] = wall_button
     elif hero_position[0] == CARS_SIZE - 1:  # down
         keyboard[2][1] = wall_button

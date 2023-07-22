@@ -9,7 +9,7 @@ class BaseTerrain(ABC):
     _transit_time = 0
     _rarity = 0
     _seed_list = []
-    _seed = []
+    _seed = ''
     _inhabitants = []
 
     was_visited = False
@@ -25,6 +25,10 @@ class BaseTerrain(ABC):
     @property
     def title(self) -> str:
         return self._title
+
+    @property
+    def description(self) -> str:
+        return f'{self._seed} {self.title}'
 
     @property
     def emoji_icon(self) -> str:

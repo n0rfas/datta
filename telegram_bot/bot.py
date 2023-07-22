@@ -8,8 +8,12 @@ from telegram.ext import (
     ContextTypes,
 )
 
-from .keyboard import get_keyboard
+from core.constants import DirectionTravel
+from core.description import get_description_of_location
 from core.map import generate_map, preview_map
+from core.moving import moving
+
+from .keyboard import get_keyboard
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -42,24 +46,36 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     map_ = context.user_data['map']
     hero_position = context.user_data['hero_position']
 
-    if query.data == 'top':
-        hero_position[0] -= 1
-    if query.data == 'down':
-        hero_position[0] += 1
+    if query.data == 'map':
+        text = f'Карта странствий:\n\n{preview_map(map_, hero_position)}'
+        await query.edit_message_text(
+            text=text,
+            reply_markup=get_keyboard(hero_position),
+        )
+        return
 
-    if query.data == 'left':
-        hero_position[1] -= 1
-    if query.data == 'right':
-        hero_position[1] += 1
+    if query.data in ['hero', 'todo', 'stock']:
+        await query.edit_message_text(
+            text='Это все пока в разработки.',
+            reply_markup=get_keyboard(hero_position),
+        )
+        return
 
-    map_[hero_position[0]][hero_position[1]].was_visited = True
+    if query.data == 'map':
+        await query.edit_message_text(
+            text=preview_map(map_, hero_position),
+            reply_markup=get_keyboard(hero_position),
+        )
+        return
 
-    preview_game_map = preview_map(map_, hero_position)
+    direction = DirectionTravel(query.data)
+    moving(map_, hero_position, direction)
+    text = get_description_of_location(map_, hero_position)
 
     logging.info(hero_position)
 
     await query.edit_message_text(
-        text=preview_game_map,
+        text=text,
         reply_markup=get_keyboard(hero_position),
     )
 
