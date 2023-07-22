@@ -54,6 +54,17 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         )
         return
 
+    if query.data == 'see':
+        chat_id = update.effective_message.chat_id
+        st = map_[hero_position[0]][hero_position[1]].description
+        photo = open(f'fields_image/{st}.jpeg', 'rb')
+        await context.bot.send_photo(
+            chat_id=chat_id,
+            photo=photo,
+            caption=st,
+            reply_markup=get_keyboard(hero_position),
+        )
+
     if query.data in ['hero', 'todo', 'stock']:
         await query.edit_message_text(
             text='Это все пока в разработки.',
